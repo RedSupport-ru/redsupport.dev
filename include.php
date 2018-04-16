@@ -1,0 +1,4 @@
+<?php
+/**
+ * Required for autoload!
+ */
