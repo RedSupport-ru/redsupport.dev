@@ -24,21 +24,18 @@ class F
      */
     private static function checkUser() {
         global $USER;
-        if ((int)self::$checkUserID && (int)$USER->GetID() !== (int)self::$checkUserID) {
-            return false;
-        }
-        return true;
+        return ((int)self::$checkUserID && (int)$USER->GetID() !== (int)self::$checkUserID);
     }
 
     /**
      * Php core function
      *
      * @param $data
-     * @return bool
      */
     public static function var_dump ($data) {
-        if (!self::checkUser()) return false;
-        var_dump($data);
+        if (!self::checkUser()) {
+            var_dump($data);
+        }
     }
 
     /**
@@ -46,20 +43,20 @@ class F
      *
      * @param $data
      * @param bool $clean
-     * @return bool
      */
     public static function dump ($data, $clean = true) {
-        if (!self::checkUser()) return false;
-        if ($clean) {
-            $A = new \CMain();
-            $A->RestartBuffer();
+        if (!self::checkUser()) {
+            if ($clean) {
+                $A = new \CMain();
+                $A->RestartBuffer();
+            }
+
+            echo '<pre>';
+            self::var_dump($data);
+            echo '</pre>';
+
+            if ($clean) die;
         }
-
-        echo '<pre>';
-        self::var_dump($data);
-        echo '</pre>';
-
-        if ($clean) die;
     }
 
     /**
@@ -68,7 +65,7 @@ class F
      * @param $thing
      * @param int $max_depth
      * @param int $depth
-     * @return string
+     * @return bool|string
      */
     public static function mydump_pre ($thing, $max_depth = -1, $depth = 0) {
         if (!self::checkUser()) return false;
@@ -81,15 +78,14 @@ class F
      * @param $thing
      * @param int $max_depth
      * @param int $depth
-     * @return string
      */
     public static function mydump_clean ($thing, $max_depth = -1, $depth = 0) {
-        if (!self::checkUser()) return false;
-
-        $A = new \CMain();
-        $A->RestartBuffer();
-        echo self::mydump_pre($thing, $max_depth, $depth);
-        die;
+        if (!self::checkUser()) {
+            $A = new \CMain();
+            $A->RestartBuffer();
+            echo self::mydump_pre($thing, $max_depth, $depth);
+            die;
+        }
     }
 
     /**
@@ -112,10 +108,10 @@ class F
      * @param string $module_id
      * @param int $traceDepth
      * @param bool $ShowArgs
-     * @return bool
      */
     public static function AddMessage2Log ($text, $module_id = '', $traceDepth = 6, $ShowArgs = false) {
-        if (!self::checkUser()) return false;
-        AddMessage2Log($text, $module_id, $traceDepth, $ShowArgs);
+        if (!self::checkUser()) {
+            AddMessage2Log($text, $module_id, $traceDepth, $ShowArgs);
+        }
     }
 }
